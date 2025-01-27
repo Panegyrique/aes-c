@@ -56,9 +56,9 @@ const uint8_t rcon[10] = {
 
 void AESEncrypt(uint8_t ciphertext[DATA_SIZE], uint8_t plaintext[DATA_SIZE], uint8_t key[DATA_SIZE]){
     uint8_t state[STATE_ROW_SIZE][STATE_COL_SIZE];
-    MessageToState(state, plaintext);
-    
     uint8_t master_key[STATE_ROW_SIZE][STATE_COL_SIZE];
+
+    MessageToState(state, plaintext);
     MessageToState(master_key, key);
 
     uint8_t roundkeys[ROUND_COUNT][STATE_ROW_SIZE][STATE_COL_SIZE];
@@ -83,7 +83,7 @@ void AESEncrypt(uint8_t ciphertext[DATA_SIZE], uint8_t plaintext[DATA_SIZE], uin
 void MessageToState(uint8_t state[STATE_ROW_SIZE][STATE_COL_SIZE], uint8_t message[DATA_SIZE]){
     for(int i=0; i < STATE_ROW_SIZE; i++){
         for (int j=0; j < STATE_COL_SIZE; j++){
-            state[i][j] = message[i * STATE_COL_SIZE + j];
+            state[j][i] = message[i * STATE_ROW_SIZE + j];
         }
     }
 }
@@ -240,10 +240,10 @@ uint8_t gmul(uint8_t a, uint8_t b){
 }
 
 
-void StateToMessage(uint8_t message[DATA_SIZE], uint8_t state[STATE_ROW_SIZE][STATE_COL_SIZE]){
-    for (int i = 0; i < STATE_ROW_SIZE; i++) {
-        for (int j = 0; j < STATE_COL_SIZE; j++) {
-            message[i * STATE_COL_SIZE + j] = state[i][j];
+void StateToMessage(uint8_t message[DATA_SIZE], uint8_t state[STATE_ROW_SIZE][STATE_COL_SIZE]) {
+    for(int i=0; i < STATE_ROW_SIZE; i++){
+        for (int j=0; j < STATE_COL_SIZE; j++){
+            message[i * STATE_ROW_SIZE + j] = state[j][i];
         }
     }
 }

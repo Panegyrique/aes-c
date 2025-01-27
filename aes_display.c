@@ -59,10 +59,35 @@ void AESEncryptDisplay(uint8_t ciphertext[DATA_SIZE], uint8_t plaintext[DATA_SIZ
     StateToMessage(ciphertext, state);
     printf("### Output ###\n\n");
     printf("Ciphertext (4x4)\n");
-    for(int i=0; i < DATA_SIZE; i++){
-        printf("%02x ", ciphertext[i]);
-        if((i+1)%4 == 0){
-            printf("\n");
+    for(int i=0; i < STATE_ROW_SIZE; i++){
+        for (int j=0; j < STATE_COL_SIZE; j++){
+            printf("%02x ", ciphertext[j * STATE_ROW_SIZE + i]);
+        }
+        printf("\n");
+    }
+
+    printf("\n### Overview ###\n\n");
+    for(int i=0; i < 3; i++){
+        if(i == 0){
+            printf("Plaintext:\t");
+        }
+        if(i == 1){
+            printf("\nKey:\t\t");
+        }
+        if(i == 2){
+            printf("\nCiphertext:\t");
+        }
+        for(int j=0; j < DATA_SIZE; j++){
+            if(i == 0){
+                printf("%02x ", plaintext[j]);
+            }
+            if(i == 1){
+                printf("%02x ", key[j]);
+            }
+            if(i == 2){
+                printf("%02x ", ciphertext[j]);
+            }
+            
         }
     }
 }
